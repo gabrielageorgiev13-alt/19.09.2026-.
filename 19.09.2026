@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Видео</title>
+  <style>
+    html,body{height:100%;margin:0;background:#000}
+    .wrap{width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    video{width:100vw;height:100vh;object-fit:cover;-webkit-object-fit:cover}
+    /* опционално: бутон за play ако autoplay е блокиран */
+    #playBtn{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);padding:0.6rem 1rem;font-size:1rem;border-radius:8px;border:none;display:none}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <video id="v" autoplay loop muted playsinline>
+      <source src="https://drive.google.com/uc?export=download&id=1GsQUhHbRQa9918lOTa05P_ruAzAfbhDO" type="video/mp4">
+      Вашият браузър не поддържа видео.
+    </video>
+  </div>
+
+  <button id="playBtn">Пусни видео</button>
+
+  <script>
+    const v = document.getElementById('v');
+    const btn = document.getElementById('playBtn');
+
+    v.play().catch(()=> {
+      // ако autoplay е блокиран — покажи бутон
+      btn.style.display = 'block';
+      btn.onclick = ()=> {
+        v.play();
+        btn.style.display = 'none';
+      };
+    });
+
+    // опционално: докосване прави fullscreen на някои браузъри (потребител трябва да участва)
+    document.addEventListener('click', ()=> {
+      if (document.fullscreenElement === null) {
+        if (v.requestFullscreen) v.requestFullscreen().catch(()=>{});
+        else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen(); // iOS webview
+      }
+    }, { once: true });
+  </script>
+</body>
+</html>
